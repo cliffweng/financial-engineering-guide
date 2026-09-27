@@ -17,10 +17,10 @@ Quant/FE interviews recycle a small number of *shapes*: price this, hedge that, 
 
 ## Core concepts
 
-- **Pattern A — "What's the fair price?"** Always: (1) write the payoff, (2) pick the measure and the discount, (3) name the dynamics, (4) name the method (closed form / tree / PDE / MC), (5) list the risks the model misses. Example: Asian call → MC under \(Q\), GBM or local vol, control = geometric Asian.
+- **Pattern A — "What's the fair price?"** Always: (1) write the payoff, (2) pick the measure and the discount, (3) name the dynamics, (4) name the method (closed form / tree / PDE / MC), (5) list the risks the model misses. Example: Asian call → MC under \\(Q\\), GBM or local vol, control = geometric Asian.
 - **Pattern B — "There's an arb — or is there?"** Compare a quoted price to a replicating portfolio. Cash-and-carry, put-call parity, curve bootstrap consistency, CDS vs. bond basis. If it looks like free money, hunt friction: borrow, haircuts, CTD, early exercise, taxes, you cannot short the asset.
 - **Pattern C — "Hedge this."** Translate the position into Greeks, then neutralize in order: delta with the underlier, gamma/vega with other options, residual curve with swaps/futures. State what is *left* (jump, skew, liquidity). "I'm delta-flat" is never the end of the answer.
-- **Pattern D — "The book lost money overnight. Why?"** Use the P&L explain: \(\Delta P \approx \Delta\cdot\Delta S + \tfrac12\Gamma(\Delta S)^2 + \text{vega}\,\Delta\sigma + \Theta + \text{carry} + \text{unexplained}\). Then match to a market move (spot, curve, smile, spread). Unexplained P&L is a mapping bug until proven otherwise.
+- **Pattern D — "The book lost money overnight. Why?"** Use the P&L explain: \\(\Delta P \approx \Delta\cdot\Delta S + \tfrac12\Gamma(\Delta S)^2 + \text{vega}\,\Delta\sigma + \Theta + \text{carry} + \text{unexplained}\\). Then match to a market move (spot, curve, smile, spread). Unexplained P&L is a mapping bug until proven otherwise.
 - **Pattern E — "Risk this."** Horizon, P&L definition (clean vs. dirty), factors, method (parametric / hist / MC), and a stress that the quantile misses. Quote VaR *and* a coherent alternative or a stress. See [VaR / risk measures](../11-var-risk-measures/).
 - **Pattern F — "Build a curve / a vol surface."** Instruments, interpolation, what you discount vs. project, arbitrage checks (calendar, butterfly). Don't invent a parametric form you cannot defend.
 - **Numbers hygiene.** Dimensions: bp vs percent vs vol points. Compounding. Day-count. Notional vs. PV. Sign of the position (long/short, payer/receiver, bought/sold protection). A wrong sign is a failed case even if the formula is right.
@@ -52,7 +52,7 @@ Start from the contract, not from the fanciest SDE you know. Complexity is a las
 ## Interview questions
 
 1. **A client wants a 1y at-the-money-forward call on a single stock. Walk the pricing case in 60 seconds.**
-   Answer: Payoff \(\max(S_T - F, 0)\) with \(F = S_0 e^{(r-q)T}\). Vanilla European → BS as quote, maybe a smile adjustment from listed options if they exist. Hedge: buy \(\Delta\) shares, finance, rebalance; residual vega/skew. Risks: dividends, borrow, jumps into earnings, discrete hedge. If they need an American, switch to a tree.
+   Answer: Payoff \\(\max(S_T - F, 0)\\) with \\(F = S_0 e^{(r-q)T}\\). Vanilla European → BS as quote, maybe a smile adjustment from listed options if they exist. Hedge: buy \\(\Delta\\) shares, finance, rebalance; residual vega/skew. Risks: dividends, borrow, jumps into earnings, discrete hedge. If they need an American, switch to a tree.
 
 2. **Quoted 1y forward is 2% through cash-and-carry. List three reasons you still might not arb it.**
    Answer: You cannot actually short the asset (borrow fee, locates). Dividends/storage uncertain. Transaction costs + bid/ask on spot *and* forward. Corporate actions. For indexes, the replicating basket vs. the futures spec. "Through" might also be a quoting convention (premium vs. discount, day-count).
@@ -67,7 +67,7 @@ Start from the contract, not from the fanciest SDE you know. Complexity is a las
    Answer: Full-reval historical or MC with a smile; delta-normal is insufficient (gamma). Misses: events not in the window, overnight jumps, liquidity/bid-ask on OTM, correlation breaks across names, and anything beyond the 99% quantile (add ES + a crash stress). Backtest exceptions.
 
 6. **The interviewer says 'your Monte Carlo price is 2.13 ± 0.40.' What do you say next?**
-   Answer: Standard error is unusable — widen \(N\), add a control variate (the European vanilla), maybe quasi-MC. Also ask: bias from \(\Delta t\)? American? Same seed for Greeks? Never ship a price whose error bar is 20% of the number.
+   Answer: Standard error is unusable — widen \\(N\\), add a control variate (the European vanilla), maybe quasi-MC. Also ask: bias from \\(\Delta t\\)? American? Same seed for Greeks? Never ship a price whose error bar is 20% of the number.
 
 ## Watch
 
